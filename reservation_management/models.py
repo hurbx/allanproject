@@ -24,7 +24,7 @@ class Client(models.Model):
 class Tour(models.Model):
     name = models.CharField(max_length=50)
     price = models.IntegerField()
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
 
     def __str__(self):
         return f'{self.id} - {self.name} - {self.price} - {self.description}'
