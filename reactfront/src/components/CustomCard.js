@@ -9,9 +9,7 @@ const CustomCard = ({ title, imagen, alt, pos }) => {
             <div className={'container'}>
                 <div className={'card'}>
                     <img className={'card-image'} src={imagen} alt={alt} />
-                    <div className={'overlay-buttom'}>
-                         <Button label={title} outlined size={'small'}/>
-                    </div>
+                    <p>{title}</p>
                 </div>
 
             </div>
@@ -21,6 +19,17 @@ const CustomCard = ({ title, imagen, alt, pos }) => {
 export default CustomCard;
 
 const Wrapper = styled.div`
+    p {
+      font-weight: lighter;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.5rem;
+      text-transform: capitalize;
+      border: white 1px solid;
+        border-radius: 1rem;
+      padding: 5px;
+      display: flex;
+        justify-content: center;
+    }
     .container {
       padding: 1rem;
       perspective: 60rem;
