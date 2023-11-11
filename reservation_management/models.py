@@ -21,21 +21,6 @@ class Client(models.Model):
         verbose_name_plural = 'Clients'
 
 
-class Tour(models.Model):
-    name = models.CharField(max_length=50)
-    price = models.IntegerField()
-    description = models.CharField(max_length=200)
-
-    def __str__(self):
-        return f'{self.id} - {self.name} - {self.price} - {self.description}'
-
-    tour = models.Manager()
-
-    class Meta:
-        verbose_name = 'Tour'
-        verbose_name_plural = 'Tours'
-
-
 class Hotel(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
@@ -68,3 +53,37 @@ class HotelRoom(models.Model):
     class Meta:
         verbose_name = 'HotelRoom'
         verbose_name_plural = 'HotelRooms'
+
+
+class Tour(models.Model):
+    currency_choices = (
+        ('USD', 'USD'),
+        ('EUR', 'EUR'),
+        ('CLP', 'CLP'),
+    )
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True, default=None)
+    hotel_room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, null=True, default=None)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, default=None)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    initial_date = models.DateField(default=None)
+    final_date = models.DateField(default=None)
+    price = models.IntegerField(default=None)
+    currency = models.CharField(max_length=10, choices=currency_choices)
+    quantity = models.IntegerField(default=None)
+    total_price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return (f'{self.id} - {self.name} - {self.price} - {self.description} - '
+                f'{self.initial_date} - {self.final_date} - {self.currency} - {self.total_price} '
+                f'{self.client} - {self.hotel} - {self.hotel_room} - {self.quantity}')
+
+    def save(self, *args, **kwargs):
+        self.total_price = self.price * self.quantity
+        super(Tour, self).save(*args, **kwargs)
+
+    tour = models.Manager()
+
+    class Meta:
+        verbose_name = 'Tour'
+        verbose_name_plural = 'Tours'
