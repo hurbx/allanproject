@@ -7,9 +7,9 @@ class Client(models.Model):
         ('b2c', 'B2C'),
     )
     name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=50)
     phone = models.CharField(max_length=20)
-    type = models.CharField(max_length=100, choices=client_type)
+    type = models.CharField(max_length=10, choices=client_type)
 
     def __str__(self):
         return f'{self.id} - {self.name} - {self.email} - {self.phone}'
@@ -27,7 +27,7 @@ class Hotel(models.Model):
     phone = models.CharField(max_length=20)
     region = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
+    country = models.CharField(max_length=20)
 
     def __str__(self):
         return (f'{self.id} - {self.name} - {self.address} -'
@@ -41,9 +41,10 @@ class Hotel(models.Model):
 
 
 class HotelRoom(models.Model):
-    room_type = models.CharField(max_length=100)
+    room_type = models.CharField(max_length=20)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=100)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
         return f'{self.id} - {self.room_type} - {self.price} - {self.description}'
@@ -61,17 +62,23 @@ class Tour(models.Model):
         ('EUR', 'EUR'),
         ('CLP', 'CLP'),
     )
+    mobilization_choices = (
+        ('auto', 'Auto'),
+        ('van', 'Van'),
+        ('bus', 'Bus')
+    )
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, null=True, default=None)
     hotel_room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, null=True, default=None)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, default=None)
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
     initial_date = models.DateField(default=None)
     final_date = models.DateField(default=None)
     price = models.IntegerField(default=None)
     currency = models.CharField(max_length=10, choices=currency_choices)
     quantity = models.IntegerField(default=None)
     total_price = models.IntegerField(default=0)
+    mobilization = models.CharField(max_length=10, choices=mobilization_choices, default=None)
 
     def __str__(self):
         return (f'{self.id} - {self.name} - {self.price} - {self.description} - '
@@ -87,3 +94,9 @@ class Tour(models.Model):
     class Meta:
         verbose_name = 'Tour'
         verbose_name_plural = 'Tours'
+
+
+class Day(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, null=True, default=None)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, default=None)
+
