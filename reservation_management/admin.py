@@ -30,8 +30,11 @@ class HotelRoomAdmin(admin.ModelAdmin):
     list_display = ('room_type', 'price', 'description', 'hotel')
 
 
-admin.site.register(models.HotelRoom)
+admin.site.register(models.HotelRoom, HotelRoomAdmin)
 
 
 class DayAdmin(admin.ModelAdmin):
     list_display = ('id', 'tour', 'client')
+
+
+admin.site.register(models.Day, DayAdmin)

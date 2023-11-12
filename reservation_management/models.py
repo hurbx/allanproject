@@ -100,3 +100,11 @@ class Day(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, null=True, default=None)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, default=None)
 
+    def __str__(self):
+        return f'{self.client} - {self.tour}'
+
+    class Meta:
+        verbose_name = 'Day'
+        verbose_name_plural = 'Days'
+
+
