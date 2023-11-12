@@ -13,7 +13,7 @@ admin.site.register(models.Client, ClientAdmin)
 
 class TourAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'client', 'initial_date', 'final_date', 'mobilization', 'hotel', 'hotel_room',
-                    'quantity', 'currency', 'price', 'total_price')
+                    'currency', 'price', 'quantity', 'discount', 'sub_total', 'iva', 'total')
 
 
 admin.site.register(models.Tour, TourAdmin)
